@@ -1,14 +1,16 @@
 package com.netmax1;
 
 class Share {
-	public synchronized void getData(String threadName) {
-		for (int i = 1; i <= 5; i++) {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public void getData(String threadName) {
+		synchronized (this) {
+			for (int i = 1; i <= 5; i++) {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println(threadName + " :: " + i);
 			}
-			System.out.println(threadName + " :: " + i);
 		}
 	}
 }
@@ -16,9 +18,9 @@ class Share {
 class MyThread extends Thread {
 	private Share share;
 
-	public MyThread(Share shareObj, String pThreadName) {
+	public MyThread(Share shareobject, String pThreadName) {
 		super(pThreadName);
-		this.share = shareObj;
+		this.share = shareobject;
 	}
 
 	public void run() {
@@ -29,11 +31,11 @@ class MyThread extends Thread {
 public class Vinay {
 
 	public static void main(String[] args) {
-		Share shareObject = new Share();
-		MyThread obj1 = new MyThread(shareObject, "Thread-A");
+		Share shareobject = new Share();
+		MyThread obj1 = new MyThread(shareobject, "Thread-A");
 		obj1.start();
 
-		MyThread obj2 = new MyThread(shareObject, "Thread-B");
+		MyThread obj2 = new MyThread(shareobject, "Thread-B");
 		obj2.start();
 	}
 }
